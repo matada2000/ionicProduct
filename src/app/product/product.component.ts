@@ -20,9 +20,15 @@ import { productDto, ProductService } from "./product.service";
 
 
             <ion-list>
-                <ion-item *ngFor="let item of product">
+                <ion-item *ngFor="let item of product; let i = index">
                     <ion-label>{{ item.name }}</ion-label>
                     <ion-label>{{ item.value }}</ion-label>
+                    <ion-button (click)="openModal(item, i)">
+                        <ion-icon name="pencil"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="deleteProduct(i)">
+                        <ion-icon name="trash"></ion-icon>
+                    </ion-button>
                 </ion-item>
             </ion-list>
 
@@ -55,12 +61,22 @@ export class ProductComponent {
         this.value = null
     }
 
-    async openModal() {
+    async openModal(item?: productDto, index?: number) {
         const modal = await this.modalController.create({
-            component: ProductModalComponent
+            component: ProductModalComponent,
+            componentProps: {
+                name: item.name ?? null,
+                value: item.value ?? null,
+                index: index ?? null
+            },
+            breakpoints: [0.5]
         })
 
         modal.present()
+    }
+
+    deleteProduct(index: number) {
+        this.productService.delete(index)
     }
 
 }

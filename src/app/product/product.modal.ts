@@ -23,8 +23,9 @@ import { ProductService } from "./product.service";
 })
 export class ProductModalComponent {
 
-    @Input() name!: string
-    @Input() value!: number
+    @Input() name!: string | null
+    @Input() value!: number | null
+    @Input() index: number | null
 
     constructor(private productService: ProductService, private modalController: ModalController) {
     }

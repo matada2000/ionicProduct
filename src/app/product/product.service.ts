@@ -23,4 +23,19 @@ export class ProductService {
     add(item: productDto) {
         this.listProduct.push(item)
     }
+
+    update(item: productDto, index: number) {
+        this.listProduct.find( (value, i) => {
+            if (i === index) {
+                value.name = item.name ?? value.name
+                value.value = item.value ?? value.value
+            }
+        })
+    }
+
+    delete(index: number) {
+        this.listProduct = this.listProduct.filter( (_, i) => {
+            return i !== index
+        })
+    }
 }
