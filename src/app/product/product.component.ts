@@ -2,7 +2,8 @@ import { CommonModule } from "@angular/common";
 import { Component, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { IonicModule } from "@ionic/angular";
+import { IonicModule, ModalController } from "@ionic/angular";
+import { ProductModalComponent } from "./product.modal";
 import { productDto, ProductService } from "./product.service";
 
 @Component({
@@ -16,16 +17,7 @@ import { productDto, ProductService } from "./product.service";
         </ion-header>
         <ion-content>
             
-            <ion-list>
-                <ion-item>
-                    <ion-label>Product name</ion-label>
-                    <ion-input type="text" [(ngModel)]="name" name="name"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label>Product value</ion-label>
-                    <ion-input type="number" [(ngModel)]="value" name="value"></ion-input>
-                </ion-item>
-            </ion-list>
+
 
             <ion-list>
                 <ion-item *ngFor="let item of product">
@@ -35,7 +27,7 @@ import { productDto, ProductService } from "./product.service";
             </ion-list>
 
             <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-                <ion-fab-button (click)="addProduct()">
+                <ion-fab-button (click)="openModal()">
                     <ion-icon name="add"></ion-icon>
                 </ion-fab-button>
             </ion-fab>
@@ -43,13 +35,13 @@ import { productDto, ProductService } from "./product.service";
         </ion-content>
     `
 })
-export class ProductComponent { 
+export class ProductComponent {
 
     product: productDto[]
     name: string
     value: number
 
-    constructor(private productService: ProductService) {
+    constructor(private productService: ProductService, private modalController: ModalController) {
         this.product = this.productService.listProduct
     }
 
@@ -60,13 +52,21 @@ export class ProductComponent {
         }
         this.productService.add(payload)
         this.name = ''
-        this.value = 0
+        this.value = null
+    }
+
+    async openModal() {
+        const modal = await this.modalController.create({
+            component: ProductModalComponent
+        })
+
+        modal.present()
     }
 
 }
 
 @NgModule({
-    declarations: [ProductComponent],
+    declarations: [ProductComponent, ProductModalComponent],
     imports: [CommonModule, RouterModule.forChild(
         [
             {
