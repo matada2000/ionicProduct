@@ -17,7 +17,8 @@ import { ProductService } from "./product.service";
                 </ion-item>
             </ion-list>
 
-            <ion-button (click)="addProduct()">Add Product</ion-button>
+            <ion-button *ngIf="index === null" (click)="addProduct()">Add Product</ion-button>
+            <ion-button *ngIf="index !== null" (click)="update()">Update Product</ion-button>
         </ion-content>
     `
 })
@@ -41,5 +42,16 @@ export class ProductModalComponent {
         this.modalController.dismiss()
     }
 
+    update() {
+        const payload = {
+            name: this.name,
+            value: this.value
+        }
+        this.productService.update(payload, this.index)
+        this.name = ''
+        this.value = null
+        this.index = null
+        this.modalController.dismiss()  
+    }
 
 }

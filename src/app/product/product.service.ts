@@ -25,7 +25,7 @@ export class ProductService {
     }
 
     update(item: productDto, index: number) {
-        this.listProduct.find( (value, i) => {
+        this.listProduct.filter( (value, i) => {
             if (i === index) {
                 value.name = item.name ?? value.name
                 value.value = item.value ?? value.value
