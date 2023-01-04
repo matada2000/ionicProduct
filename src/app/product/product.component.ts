@@ -59,6 +59,8 @@ export class ProductComponent {
             value: this.value
         }
         this.productService.add(payload)
+        this.name = ''
+        this.value = 0
     }
 
 }
